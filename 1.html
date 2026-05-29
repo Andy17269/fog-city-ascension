@@ -1,0 +1,369 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Fog City Ascension: Drone Challenge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Hanken+Grotesk:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393842",
+                      "surface-variant": "#34343d",
+                      "tertiary": "#fff5f0",
+                      "inverse-on-surface": "#302f39",
+                      "surface-tint": "#00dbe7",
+                      "tertiary-fixed-dim": "#ffb77d",
+                      "surface-container-high": "#292932",
+                      "surface-container-lowest": "#0d0d16",
+                      "on-tertiary-container": "#924e00",
+                      "on-error": "#690005",
+                      "on-background": "#e4e1ed",
+                      "tertiary-fixed": "#ffdcc3",
+                      "primary": "#e1fdff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-tertiary-fixed": "#2f1500",
+                      "on-secondary-container": "#fff6fc",
+                      "primary-fixed": "#74f5ff",
+                      "secondary-fixed": "#f8d8ff",
+                      "on-secondary-fixed": "#320047",
+                      "tertiary-container": "#ffd2b1",
+                      "surface-container-low": "#1b1b23",
+                      "surface-container": "#1f1f27",
+                      "on-tertiary": "#4d2600",
+                      "outline-variant": "#3a494b",
+                      "outline": "#849495",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface": "#13131b",
+                      "surface-dim": "#13131b",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#6e3900",
+                      "on-primary-fixed": "#002022",
+                      "inverse-primary": "#00696f",
+                      "inverse-surface": "#e4e1ed",
+                      "secondary": "#ebb2ff",
+                      "primary-fixed-dim": "#00dbe7",
+                      "primary-container": "#00f2ff",
+                      "surface-container-highest": "#34343d",
+                      "on-secondary": "#520072",
+                      "on-primary": "#00363a",
+                      "on-surface": "#e4e1ed",
+                      "on-error-container": "#ffdad6",
+                      "on-surface-variant": "#b9cacb",
+                      "secondary-container": "#b600f8",
+                      "background": "#13131b",
+                      "error-container": "#93000a",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-primary-container": "#006a71"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "xs": "4px",
+                      "hud-safe-margin": "32px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Sora"],
+                      "label-mono-sm": ["JetBrains Mono"],
+                      "display-lg": ["Sora"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "display-lg-mobile": ["Sora"],
+                      "body-md": ["Hanken Grotesk"],
+                      "label-mono-lg": ["JetBrains Mono"],
+                      "headline-sm": ["Sora"]
+              },
+              "fontSize": {
+                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-mono-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-mono-lg": ["20px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { margin: 0; overflow: hidden; background-color: #13131b; }
+        .glass-panel { background: rgba(31, 31, 39, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hud-chip { border: 1px solid #b600f8; background-color: rgba(182, 0, 248, 0.1); }
+        .primary-btn { background-color: #00dbe7; color: #13131b; transition: all 0.2s; }
+        .primary-btn:hover { box-shadow: 0 0 15px rgba(0, 219, 231, 0.8); }
+        .neon-glow { text-shadow: 0 0 8px rgba(0, 219, 231, 0.8); }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen w-screen flex items-center justify-center relative">
+<!-- Top Navigation Anchor (Shared Component mapping) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-hud-safe-margin pt-sm bg-transparent bg-gradient-to-b from-surface-container-lowest to-transparent pointer-events-none">
+<div class="font-headline-md text-headline-md text-primary-container drop-shadow-[0_0_8px_rgba(0,219,231,0.8)] uppercase">雾都飞升</div>
+<div class="flex gap-md pointer-events-auto text-on-surface-variant">
+<button class="hover:text-surface-tint transition-colors scale-95 duration-100 p-sm rounded-full bg-surface-container/30 backdrop-blur-md">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="hover:text-surface-tint transition-colors scale-95 duration-100 p-sm rounded-full bg-surface-container/30 backdrop-blur-md">
+<span class="material-symbols-outlined">leaderboard</span>
+</button>
+</div>
+</nav>
+<!-- Game Container -->
+<div class="relative rounded-lg overflow-hidden border-2 border-primary-container shadow-[0_0_30px_rgba(0,242,255,0.2)] bg-surface-lowest">
+<canvas class="block" height="700" id="gameCanvas" width="400"></canvas>
+<!-- HUD (Real-time telemetry) -->
+<div class="absolute top-md right-md hud-chip px-sm py-xs font-label-mono-sm text-label-mono-sm text-secondary z-10">高度: <span id="scoreDisplay" class="">0</span>m</div>
+<!-- Start Screen Overlay -->
+<div class="absolute inset-0 z-20 flex flex-col items-center justify-center glass-panel" id="startScreen">
+<span class="material-symbols-outlined text-[64px] text-primary-container neon-glow animate-pulse mb-lg">
+                flight_takeoff
+            </span>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary mb-md text-center">雾都飞升</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xl text-center px-lg">在赛博都市中穿梭。<br>使用左右方向键控制飞行。</p>
+<button class="primary-btn font-label-mono-lg text-label-mono-lg px-xl py-sm uppercase tracking-wider" id="startBtn">初始化序列</button>
+</div>
+<!-- Game Over Overlay -->
+<div class="absolute inset-0 z-30 flex flex-col items-center justify-center glass-panel hidden" id="gameOverScreen">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-error mb-lg neon-glow">信号中断</h2>
+<div class="bg-surface-container-high border border-outline-variant p-lg rounded-DEFAULT w-3/4 max-w-xs mb-xl">
+<div class="flex justify-between items-center mb-sm border-b border-white/10 pb-sm">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">最终高度</span>
+<span class="font-label-mono-lg text-label-mono-lg text-primary" id="finalScore">0m</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">最高高度</span>
+<span class="font-label-mono-lg text-label-mono-lg text-secondary" id="bestScore">0m</span>
+</div>
+</div>
+<button class="primary-btn font-label-mono-lg text-label-mono-lg px-xl py-sm uppercase tracking-wider" id="restartBtn">重新部署无人机</button>
+</div>
+</div>
+<!-- Bottom Navigation Shell (Mobile view anchor, hidden on md+) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-lg px-hud-safe-margin md:hidden bg-gradient-to-t from-surface-container-lowest to-transparent pointer-events-none">
+<!-- Structural only, as per HUD relevance logic -->
+</nav>
+<script>
+        // 游戏配置与状态管理
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const startScreen = document.getElementById('startScreen');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        
+        let gameState = 'start'; // start, playing, gameover
+        let score = 0;
+        let maxScore = 0;
+        let cameraY = 0;
+
+        // 无人机配置
+        const drone = {
+            x: 200,
+            y: 350,
+            width: 30,
+            height: 15,
+            vx: 0,
+            vy: 0,
+            speed: 5,
+            jumpStrength: -12,
+            gravity: 0.4
+        };
+
+        // 平台管理
+        let platforms = [];
+        const platformWidth = 60;
+        const platformHeight = 10;
+        const platformCount = 8;
+
+        // 输入监听
+        const keys = {
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.code)) keys[e.code] = true;
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.code)) keys[e.code] = false;
+        });
+
+        // 初始化游戏
+        function initGame() {
+            drone.x = canvas.width / 2;
+            drone.y = canvas.height / 2;
+            drone.vy = 0;
+            score = 0;
+            cameraY = 0;
+            platforms = [];
+
+            // 生成初始平台 (最底部的基础平台)
+            platforms.push({ x: canvas.width / 2 - platformWidth / 2, y: canvas.height - 50 });
+
+            // 随机生成后续平台
+            for (let i = 1; i < platformCount; i++) {
+                createPlatform(canvas.height - 50 - i * 100);
+            }
+
+            gameState = 'playing';
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            gameLoop();
+        }
+
+        // 创建随机平台
+        function createPlatform(y) {
+            platforms.push({
+                x: Math.random() * (canvas.width - platformWidth),
+                y: y
+            });
+        }
+
+        // 渲染霓虹无人机
+        function drawDrone() {
+            ctx.save();
+            ctx.translate(drone.x, drone.y - cameraY);
+            
+            // 发光效果
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#00f2ff';
+            
+            // 主体
+            ctx.fillStyle = '#e1fdff';
+            ctx.fillRect(-drone.width/2, -drone.height/2, drone.width, drone.height);
+            
+            // 引擎口
+            ctx.fillStyle = '#00dbe7';
+            ctx.fillRect(-drone.width/2 - 5, -drone.height/2 + 5, 10, 5);
+            ctx.fillRect(drone.width/2 - 5, -drone.height/2 + 5, 10, 5);
+
+            ctx.restore();
+        }
+
+        // 渲染平台 (赛博朋克光条)
+        function drawPlatforms() {
+            ctx.save();
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00dbe7';
+            ctx.fillStyle = 'rgba(0, 219, 231, 0.8)';
+            
+            platforms.forEach(p => {
+                ctx.fillRect(p.x, p.y - cameraY, platformWidth, platformHeight);
+            });
+            ctx.restore();
+        }
+
+        // 渲染背景 (简易网格雾效)
+        function drawBackground() {
+            ctx.fillStyle = '#13131b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 简单的向上移动的粒子/雾效线
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for(let i=0; i<10; i++) {
+                let y = (cameraY * 0.5 + i * 100) % canvas.height;
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+            }
+            ctx.stroke();
+        }
+
+        // 更新逻辑
+        function update() {
+            if (gameState !== 'playing') return;
+
+            // 左右移动
+            if (keys.ArrowLeft) drone.x -= drone.speed;
+            if (keys.ArrowRight) drone.x += drone.speed;
+
+            // 屏幕边缘包裹
+            if (drone.x < -drone.width/2) drone.x = canvas.width + drone.width/2;
+            if (drone.x > canvas.width + drone.width/2) drone.x = -drone.width/2;
+
+            // 物理
+            drone.vy += drone.gravity;
+            drone.y += drone.vy;
+
+            // 碰撞检测 (只在下落时触发)
+            if (drone.vy > 0) {
+                platforms.forEach(p => {
+                    if (drone.x + drone.width/2 > p.x && 
+                        drone.x - drone.width/2 < p.x + platformWidth &&
+                        drone.y + drone.height/2 > p.y &&
+                        drone.y + drone.height/2 < p.y + platformHeight + drone.vy) {
+                        
+                        drone.vy = drone.jumpStrength;
+                    }
+                });
+            }
+
+            // 镜头跟随 (当无人机上升超过屏幕一半)
+            if (drone.y < cameraY + canvas.height / 2) {
+                let diff = (cameraY + canvas.height / 2) - drone.y;
+                cameraY -= diff;
+                score += diff;
+                scoreDisplay.innerText = Math.floor(score / 10);
+            }
+
+            // 回收并生成新平台
+            platforms = platforms.filter(p => p.y < cameraY + canvas.height + 50);
+            while (platforms.length < platformCount) {
+                let highestY = Math.min(...platforms.map(p => p.y));
+                createPlatform(highestY - (Math.random() * 50 + 50));
+            }
+
+            // 游戏结束判定 (掉出屏幕底部)
+            if (drone.y > cameraY + canvas.height) {
+                gameOver();
+            }
+        }
+
+        // 游戏结束处理
+        function gameOver() {
+            gameState = 'gameover';
+            let finalScore = Math.floor(score / 10);
+            if (finalScore > maxScore) maxScore = finalScore;
+            
+            document.getElementById('finalScore').innerText = finalScore + 'm';
+            document.getElementById('bestScore').innerText = maxScore + 'm';
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // 主循环
+        function gameLoop() {
+            if (gameState !== 'playing') return;
+            
+            update();
+            
+            // 渲染
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBackground();
+            drawPlatforms();
+            drawDrone();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // 按钮事件绑定
+        document.getElementById('startBtn').addEventListener('click', initGame);
+        document.getElementById('restartBtn').addEventListener('click', initGame);
+
+    </script>
+
+
+</body></html>
