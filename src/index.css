@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hanken+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Match custom display and mono fonts exactly for maximum HUD precision */
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Custom branding colors defined in design system blueprints */
+  --color-neon-cyan: #00f2ff;
+  --color-neon-purple: #bc13fe;
+  --color-dark-slate: #0a0a12;
+}
+
+/* Base custom interactive scrollbars to maintain industrial aesthetic */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 18, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.25);
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(188, 19, 254, 0.5);
+}
+
+/* Glassmorphic backdrop blurring utility panels overrides */
+.glass-panel {
+  backdrop-filter: blur(12px);
+  background: rgba(10, 10, 18, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Shimmer animations on neon flight gates */
+@keyframes neon-flicker {
+  0%, 100% { opacity: 0.95; text-shadow: 0 0 10px rgba(0, 242, 255, 0.6); }
+  50% { opacity: 0.85; text-shadow: 0 0 4px rgba(0, 242, 255, 0.2); }
+}
+
+.glow-text {
+  animation: neon-flicker 2s infinite alternate;
+}

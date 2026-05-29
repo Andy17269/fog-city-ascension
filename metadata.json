@@ -1,0 +1,6 @@
+{
+  "name": "Fog City Ascension",
+  "description": "Cyberpunk high-altitude vertical flying simulation drone game. Navigate through neon skyscrapers using left/right inputs, collect battery matrix cells, avoid neon smog towers, and optimize score multipliers with booster spacebar engine pitches.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
